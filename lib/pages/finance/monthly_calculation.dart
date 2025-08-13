@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FinancePage extends StatelessWidget {
-  const FinancePage({super.key});
+class MonthlyCalculationPage extends StatelessWidget {
+  const MonthlyCalculationPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -9,17 +9,14 @@ class FinancePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Finanças'),
+        title: const Text('Calculo Mensal'),
         backgroundColor: theme.appBarTheme.backgroundColor,
         elevation: theme.appBarTheme.elevation,
         iconTheme: theme.appBarTheme.iconTheme,
         titleTextStyle: theme.appBarTheme.titleTextStyle,
       ),
-      body: const Center(
-        child: Text(
-          "Página de Finanças",
-          style: TextStyle(fontSize: 20),
-        ),
+      body: Center(
+        child: Text('teste'),
       ),
     );
   }
