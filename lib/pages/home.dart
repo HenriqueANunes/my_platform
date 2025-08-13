@@ -8,40 +8,21 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
 
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Cabeçalho com sombra e tema escuro
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              decoration: BoxDecoration(
-                color: theme.appBarTheme.backgroundColor,
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(),
-                    spreadRadius: 2,
-                    blurRadius: 6,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Text(
-                    "Meu App",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: theme.iconTheme.color,
-                    ),
-                  ),
-                ],
-              ),
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'Meu App',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: theme.iconTheme.color,
             ),
-
-            const SizedBox(height: 16),
-
+          ),
+          backgroundColor: theme.appBarTheme.backgroundColor,
+        ),
+        body: Column(
+          children: [
             // Grade de botões
             Expanded(
               child: LayoutBuilder(
@@ -69,7 +50,7 @@ class HomePage extends StatelessWidget {
                       AnimatedSquare(
                         icon: Icons.attach_money,
                         label: 'Finanças',
-                        onTap: () => Navigator.pushNamed(context, '/finance'),
+                        onTap: () => Navigator.pushNamed(context, '/finance/finance.dart'),
                       ),
                       AnimatedSquare(
                         icon: Icons.person,
