@@ -1,0 +1,30 @@
+tela de finanças:
+
+tela de cadastro de despesas:
+- Lista de despesas cadastradas ativas;
+- botao de '+' no canto da tela para adicionar um novo cadastro;
+- ao clicar em um cadastro da lista, abrir um modal com os dados cadastrados sendo possivel editar
+    com botões de cancelar, deletar e salvar
+
+- cadastrar despesas fixas;
+    - nome
+    - valor
+    - anomes_ini
+    - anomes_fim
+    - tipo == saida
+
+
+tela de calculo mensal:
+- cadastrar despesas do mes atual;
+    - fixo:
+        - cartao de credito
+        - outros
+        - anomes_ini == anomes_fim == atual
+
+- cadastrar salario do mes atual:
+    - valor
+    - anomes_ini == anomes_fim == atual
+    - tipo == entrada
+
+- Ao clicar em 'calcular', salvar os dados e subtrair a entrada do mes com todas as saidas
+    cadastradas ativas
