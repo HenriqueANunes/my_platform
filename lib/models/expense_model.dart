@@ -1,12 +1,23 @@
-class Expense {
+import 'dart:ffi';
+
+class ExpenseModel {
   final int? id;
   final String name;
   final double value;
   final DateTime? date_start;
   final DateTime? date_end;
   final String type;
+  final bool isCredit;
 
-  Expense({this.id, required this.name, required this.value, this.date_start, this.date_end, required this.type});
+  ExpenseModel({
+    this.id,
+    required this.name,
+    required this.value,
+    this.date_start,
+    this.date_end,
+    required this.type,
+    this.isCredit = false,
+  });
 
   // 'Object' to 'Map'
   Map<String, dynamic> toMap() {
@@ -22,12 +33,13 @@ class Expense {
     map['date_end'] = date_end.toString();
 
     map['type'] = type;
+    map['is_credit'] = isCredit == true ? 1 : 0;
 
     return map;
   }
 
   // 'Map' to 'Object'
-  factory Expense.fromString(Map<String, dynamic> data) => Expense(
+  factory ExpenseModel.fromString(Map<String, dynamic> data) => ExpenseModel(
     id: data['id'],
     name: data['name'],
     value: data['value'],
