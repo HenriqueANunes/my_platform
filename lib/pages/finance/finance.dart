@@ -45,7 +45,7 @@ class FinancePage extends StatelessWidget {
               AnimatedSquare(
                 icon: Icons.list,
                 label: 'Cadastrar despesas',
-                onTap: () => Navigator.pushNamed(context, '/finance/register_expenses.dart'),
+                onTap: () => Navigator.pushNamed(context, '/finance/list_expenses.dart'),
               ),
               // pode adicionar mais cards aqui se quiser
             ],
