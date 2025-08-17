@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_platform/models/expense_model.dart';
+import 'package:my_platform/services/expense_service.dart';
 
 class ExpenseForm extends StatefulWidget {
   const ExpenseForm({super.key});
@@ -9,8 +11,8 @@ class ExpenseForm extends StatefulWidget {
 }
 
 class ExpenseFormState extends State<ExpenseForm> {
-  final _title = TextEditingController();
-  final _amount = TextEditingController();
+  final _name = TextEditingController();
+  final _value = TextEditingController();
 
   DateTimeRange? _dateRange;
 
@@ -27,7 +29,7 @@ class ExpenseFormState extends State<ExpenseForm> {
           children: [
             // Title
             TextField(
-              controller: _title,
+              controller: _name,
               decoration: const InputDecoration(
                 labelText: 'Nome da despesa',
               ),
@@ -35,7 +37,7 @@ class ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: 20.0),
             // Amount
             TextField(
-              controller: _amount,
+              controller: _value,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
                 labelText: 'Valor da despesa',
@@ -58,9 +60,7 @@ class ExpenseFormState extends State<ExpenseForm> {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton.icon(
-              onPressed: () {
-                print('salvou');
-              },
+              onPressed: _saveExpense,
               label: const Text('Salvar'),
             ),
           ],
@@ -81,5 +81,14 @@ class ExpenseFormState extends State<ExpenseForm> {
     }
 
     setState(() => _dateRange = newDateRange);
+  }
+
+  _saveExpense() async {
+    final expense = ExpenseModel(
+      name: _name.text,
+      value: double.parse(_value.text),
+      type: 'exit',
+    );
+    await ExpenseService().saveExpense(expenseObj: expense);
   }
 }

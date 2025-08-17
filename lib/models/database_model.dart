@@ -1,11 +1,11 @@
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class DatabaseService {
+class DatabaseModel {
   static Database? _db;
-  static final DatabaseService instance = DatabaseService._constructor();
 
-  DatabaseService._constructor();
+  DatabaseModel._constructor();
+  static final DatabaseModel instance = DatabaseModel._constructor();
 
   Future<Database> get database async {
     if (_db != null) {
@@ -20,22 +20,24 @@ class DatabaseService {
     final databasePath = join(databaseDirPath, 'master_db.db');
     final database = await openDatabase(
       databasePath,
+      version: 1,
       onCreate: _createDb,
     );
     return database;
   }
 
-  Future<void> _createDb(Database db, int version) async {
+  Future _createDb(Database db, int version) async {
     // this method runs only once. when the database is being created
 
     db.execute("""
-      CREATE TABLE financas (
-        id INTEGER PRIMAY KEY,
+      CREATE TABLE expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT,
         value REAL,
         date_start INTEGER,
         date_end INTEGER,
-        tipo TEXT
+        type TEXT,
+        is_credit BOOLEAN
       )
     """);
   }

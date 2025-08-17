@@ -1,10 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+
 import 'package:my_platform/pages/home.dart';
 import 'package:my_platform/pages/finance/finance.dart';
 import 'package:my_platform/pages/finance/monthly_calculation.dart';
 import 'package:my_platform/pages/finance/list_expenses.dart';
 
 void main() {
+  // Initialize FFI for desktop platforms if needed
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    sqfliteFfiInit();
+  }
+
+  // Set the database factory to use the FFI implementation
+  databaseFactory = databaseFactoryFfi;
+
   runApp(const MyApp());
 }
 
