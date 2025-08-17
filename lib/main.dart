@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_platform/pages/home.dart';
 import 'package:my_platform/pages/finance/finance.dart';
 import 'package:my_platform/pages/finance/monthly_calculation.dart';
-import 'package:my_platform/pages/finance/register_expenses.dart';
+import 'package:my_platform/pages/finance/list_expenses.dart';
 
 void main() {
   runApp(const MyApp());
@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => const HomePage(),
         '/finance/finance.dart': (context) => const FinancePage(),
         '/finance/monthly_calculation.dart': (context) => const MonthlyCalculationPage(),
-        '/finance/register_expenses.dart': (context) => const RegisterExpensesPage(),
+        '/finance/list_expenses.dart': (context) => const ListExpensesPage(),
       },
     );
   }
