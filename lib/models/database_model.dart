@@ -41,4 +41,9 @@ class DatabaseModel {
       )
     """);
   }
+
+  Future<void> close() async {
+    final db = await instance.database;
+    return db.close();
+  }
 }
