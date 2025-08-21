@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_platform/models/database_model.dart';
 import 'package:my_platform/widgets/expense_form.dart';
+import 'package:my_platform/widgets/expense_tile.dart';
+import 'package:my_platform/services/expense_service.dart';
+import 'package:my_platform/models/expense_model.dart';
 
 class ListExpensesPage extends StatefulWidget {
   const ListExpensesPage({super.key});
@@ -15,7 +17,7 @@ class ExpensesList extends State<ListExpensesPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    // final DatabaseService _databaseService = DatabaseService.instance;
+    final Future<List<ExpenseModel?>> expensesList = ExpenseService().getAllExpenses();
 
     return Scaffold(
       appBar: AppBar(
@@ -25,7 +27,33 @@ class ExpensesList extends State<ListExpensesPage> {
         iconTheme: theme.appBarTheme.iconTheme,
         titleTextStyle: theme.appBarTheme.titleTextStyle,
       ),
-      body: getExpenses(),
+      body: FutureBuilder<List<ExpenseModel?>>(
+          future: expensesList,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting){
+              return const Center(child: CircularProgressIndicator());
+            } else if ( snapshot.connectionState == ConnectionState.done){
+              if (snapshot.hasError) {
+                final error = snapshot.error;
+                return Center(child: Text('$error'));
+              } else {
+                final expensesList = snapshot.data;
+                return ListView.separated(
+                    separatorBuilder: (context, index) {
+                      return const SizedBox(height: 8);
+                    },
+                    itemCount: expensesList == null ? 0 : expensesList.length,
+                    itemBuilder: (context, index) {
+                      final expense = expensesList![index];
+                      return expenseTile(expense!, theme);
+                    },
+                );
+              }
+            } else {
+              return const Center(child: Text('teste'));
+            }
+          },
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showModalBottomSheet(
@@ -38,26 +66,6 @@ class ExpensesList extends State<ListExpensesPage> {
         backgroundColor: theme.floatingActionButtonTheme.backgroundColor,
         child: const Icon(Icons.add),
       ),
-    );
-  }
-
-  ListView getExpenses() {
-    final theme = Theme.of(context);
-    int qtdExpenses = 1;
-
-    return ListView.builder(
-      itemCount: qtdExpenses,
-      itemBuilder: (context, index) {
-        return Card(
-            color: theme.cardColor,
-            // elevation: 2.0,
-            child: ListTile(
-              leading: Icon(Icons.trending_down),
-              title: Text('teste'),
-              trailing: Text('R\$ 1.000,00'),
-            )
-        );
-      },
     );
   }
 }

@@ -39,12 +39,13 @@ class ExpenseModel {
   }
 
   // 'Map' to 'Object'
-  factory ExpenseModel.fromString(Map<String, dynamic> data) => ExpenseModel(
+  factory ExpenseModel.fromJson(Map<String, dynamic> data) => ExpenseModel(
     id: data['id'],
     name: data['name'],
     value: data['value'],
-    date_start: DateTime.parse(data['date_start']),
-    date_end: DateTime.parse(data['date_end']),
+    date_start: data['date_start'] == 'null' ? null : DateTime.parse(data['date_start']),
+    date_end: data['date_end'] == 'null' ? null :  DateTime.parse(data['date_end']),
     type: data['type'],
+    isCredit: data['is_credit'] == 1
   );
 }

@@ -23,9 +23,10 @@ class ExpenseService{
     }
   }
 
-  // Future<List<ExpenseModel>> getAllExpenses() async{
-  //   final db = await DatabaseModel.instance.getDatabase();
-  //
-  // }
+  Future<List<ExpenseModel?>> getAllExpenses() async {
+    final db = await DatabaseModel.instance.getDatabase();
+    var result = await db.query('expenses', orderBy: 'id ASC');
+    return result.map((json) => ExpenseModel.fromJson(json)).toList();
+  }
 
 }
