@@ -31,7 +31,7 @@ Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, 
     tileColor: theme.cardColor,
     leading: const Icon(Icons.trending_down),
     title: Text(expense.name),
-    subtitle: Text(dateText.isNotEmpty ? dateText : ''),
+    subtitle: Text(dateText.isNotEmpty ? dateText : 'Sem data'),
     trailing: Text(_formatter.format(expense.value)),
     onTap: () async {
       final status = await showModalBottomSheet(
