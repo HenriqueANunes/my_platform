@@ -52,18 +52,8 @@ class HomePage extends StatelessWidget {
                       onTap: () => Navigator.pushNamed(context, '/finance/finance.dart'),
                     ),
                     AnimatedSquare(
-                      icon: Icons.person,
-                      label: 'Perfil',
-                      onTap: () {},
-                    ),
-                    AnimatedSquare(
                       icon: Icons.settings,
-                      label: 'Configurações',
-                      onTap: () {},
-                    ),
-                    AnimatedSquare(
-                      icon: Icons.info,
-                      label: 'Sobre',
+                      label: 'A fazer...',
                       onTap: () {},
                     ),
                     // pode adicionar mais cards aqui se quiser
