@@ -58,7 +58,7 @@ class ExpensesList extends State<ListExpensesPage> {
                     itemCount: expensesList == null ? 0 : expensesList.length,
                     itemBuilder: (context, index) {
                       final expense = expensesList![index];
-                      return expenseTile(expense!, theme);
+                      return expenseTile(context, expense!, theme, _refreshData);
                     },
                 );
               }
@@ -69,12 +69,14 @@ class ExpensesList extends State<ListExpensesPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          await showModalBottomSheet(
+          final status = await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               builder: (_) => ExpenseForm(),
           );
-          _refreshData();
+          if (status == true) {
+            _refreshData();
+          }
         },
         tooltip: 'Cadatrar Despesa',
         backgroundColor: theme.floatingActionButtonTheme.backgroundColor,

@@ -6,7 +6,9 @@ import 'package:my_platform/services/currency_formatter.dart';
 import 'package:my_platform/services/expense_service.dart';
 
 class ExpenseForm extends StatefulWidget {
-  const ExpenseForm({super.key});
+  final ExpenseModel? expense; // se vier, edita; se não, cria
+
+  const ExpenseForm({super.key, this.expense});
 
   @override
   State<StatefulWidget> createState() => ExpenseFormState();
@@ -16,13 +18,29 @@ class ExpenseFormState extends State<ExpenseForm> {
   final _name = TextEditingController();
   final _value = TextEditingController();
   bool _isCredit = false;
-
   DateTimeRange? _dateRange;
-  @override
 
+  @override
   void initState() {
     super.initState();
-    _value.text = 'R\$ 0,00';
+
+    if (widget.expense != null) {
+      // edição
+      _name.text = widget.expense!.name;
+      _value.text = NumberFormat.currency(locale: 'pt_BR', symbol: 'R\$')
+          .format(widget.expense!.value);
+      _isCredit = widget.expense!.isCredit;
+
+      if (widget.expense!.date_start != null) {
+        _dateRange = DateTimeRange(
+          start: widget.expense!.date_start!,
+          end: widget.expense!.date_end ?? widget.expense!.date_start!,
+        );
+      }
+    } else {
+      // novo
+      _value.text = 'R\$ 0,00';
+    }
   }
 
   @override
@@ -62,17 +80,20 @@ class ExpenseFormState extends State<ExpenseForm> {
                 Expanded(
                   child: Text(
                     dateStart != null && dateEnd != null
-                        ? 'Data incial: ${DateFormat('dd/MM/yyyy').format(dateStart)}\n'
-                              'Data final: ${DateFormat('dd/MM/yyyy').format(dateEnd)}'
+                        ? 'Data inicial: ${DateFormat('dd/MM/yyyy').format(dateStart)}\n'
+                          'Data final: ${DateFormat('dd/MM/yyyy').format(dateEnd)}'
                         : 'Selecione uma data',
                   ),
                 ),
-                IconButton(onPressed: () => pickDateRange(), icon: const Icon(Icons.calendar_month)),
+                IconButton(
+                  onPressed: pickDateRange,
+                  icon: const Icon(Icons.calendar_month),
+                ),
               ],
             ),
             const SizedBox(height: 20.0),
             CheckboxListTile(
-              title: Text('É Crédito?'),
+              title: const Text('É Crédito?'),
               value: _isCredit,
               onChanged: (value) {
                 setState(() {
@@ -83,7 +104,8 @@ class ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: 20.0),
             ElevatedButton.icon(
               onPressed: _saveExpense,
-              label: const Text('Salvar'),
+              icon: const Icon(Icons.save),
+              label: Text(widget.expense == null ? 'Salvar' : 'Atualizar'),
             ),
           ],
         ),
@@ -92,17 +114,14 @@ class ExpenseFormState extends State<ExpenseForm> {
   }
 
   Future<void> pickDateRange() async {
-    DateTimeRange? newDateRange = await showDateRangePicker(
+    final newDateRange = await showDateRangePicker(
       context: context,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-
-    if (newDateRange == null) {
-      return;
+    if (newDateRange != null) {
+      setState(() => _dateRange = newDateRange);
     }
-
-    setState(() => _dateRange = newDateRange);
   }
 
   _saveExpense() {
@@ -115,8 +134,9 @@ class ExpenseFormState extends State<ExpenseForm> {
         .trim();
 
     final expense = ExpenseModel(
+      id: widget.expense?.id,
       name: _name.text,
-      value: double.parse(cleanValue),
+      value: double.tryParse(cleanValue) ?? 0.0,
       date_start: dateStart,
       date_end: dateEnd,
       type: 'exit',
@@ -127,6 +147,6 @@ class ExpenseFormState extends State<ExpenseForm> {
     ExpenseService().saveExpense(expenseObj: expense);
 
     // close the bottomsheet
-    Navigator.of(context).pop();
+    Navigator.of(context).pop(true);
   }
 }
