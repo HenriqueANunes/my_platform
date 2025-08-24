@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 class ExpenseModel {
   final int? id;
   final String name;
@@ -29,8 +27,8 @@ class ExpenseModel {
 
     map['name'] = name;
     map['value'] = value;
-    map['date_start'] = date_start.toString();
-    map['date_end'] = date_end.toString();
+    map['date_start'] = date_start?.millisecondsSinceEpoch;
+    map['date_end'] = date_end?.millisecondsSinceEpoch;
 
     map['type'] = type;
     map['is_credit'] = isCredit == true ? 1 : 0;
@@ -43,8 +41,12 @@ class ExpenseModel {
     id: data['id'],
     name: data['name'],
     value: data['value'],
-    date_start: data['date_start'] == 'null' ? null : DateTime.parse(data['date_start']),
-    date_end: data['date_end'] == 'null' ? null :  DateTime.parse(data['date_end']),
+    date_start: data['date_start'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(data['date_start'])
+        : null,
+    date_end: data['date_end'] != null
+        ? DateTime.fromMillisecondsSinceEpoch(data['date_end'])
+        : null,
     type: data['type'],
     isCredit: data['is_credit'] == 1
   );

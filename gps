@@ -12,6 +12,7 @@ tela de cadastro de despesas:
     - anomes_ini
     - anomes_fim
     - tipo == saida
+    - is_credito
 
 
 tela de calculo mensal:

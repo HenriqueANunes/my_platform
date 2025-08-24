@@ -13,11 +13,24 @@ class ListExpensesPage extends StatefulWidget {
 }
 
 class ExpensesList extends State<ListExpensesPage> {
+  final _expenseObj = ExpenseService();
+  late Future<List<ExpenseModel?>> _expensesList;
+
+  @override
+  void initState() {
+    super.initState();
+    _expensesList = _expenseObj.getAllExpenses(); // Initialize your future in initState
+  }
+
+  void _refreshData() {
+    setState(() {
+      _expensesList = _expenseObj.getAllExpenses(); // Assign a new Future to trigger rebuild
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final Future<List<ExpenseModel?>> expensesList = ExpenseService().getAllExpenses();
 
     return Scaffold(
       appBar: AppBar(
@@ -28,7 +41,7 @@ class ExpensesList extends State<ListExpensesPage> {
         titleTextStyle: theme.appBarTheme.titleTextStyle,
       ),
       body: FutureBuilder<List<ExpenseModel?>>(
-          future: expensesList,
+          future: _expensesList,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting){
               return const Center(child: CircularProgressIndicator());
@@ -55,12 +68,13 @@ class ExpensesList extends State<ListExpensesPage> {
           },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
+        onPressed: () async {
+          await showModalBottomSheet(
               context: context,
               isScrollControlled: true,
               builder: (_) => ExpenseForm(),
           );
+          _refreshData();
         },
         tooltip: 'Cadatrar Despesa',
         backgroundColor: theme.floatingActionButtonTheme.backgroundColor,
