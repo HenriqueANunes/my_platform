@@ -9,13 +9,12 @@ import 'package:my_platform/pages/finance/monthly_calculation.dart';
 import 'package:my_platform/pages/finance/list_expenses.dart';
 
 void main() {
+
   // Initialize FFI for desktop platforms if needed
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
   }
-
-  // Set the database factory to use the FFI implementation
-  databaseFactory = databaseFactoryFfi;
 
   runApp(const MyApp());
 }
