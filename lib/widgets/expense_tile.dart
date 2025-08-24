@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_platform/models/expense_model.dart';
+import 'package:my_platform/widgets/expense_form.dart';
 
 final _dateFormatter = DateFormat('dd/MM/yyyy');
 
-Widget expenseTile(ExpenseModel expense, ThemeData theme) {
+Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, VoidCallback onRefresh) {
+  final NumberFormat _formatter = NumberFormat.currency(
+    locale: 'pt_BR',
+    symbol: 'R\$',
+  );
   final startDate = expense.date_start != null
       ? _dateFormatter.format(expense.date_start!)
       : '';
@@ -27,6 +32,16 @@ Widget expenseTile(ExpenseModel expense, ThemeData theme) {
     leading: const Icon(Icons.trending_down),
     title: Text(expense.name),
     subtitle: Text(dateText.isNotEmpty ? dateText : ''),
-    trailing: Text(expense.value.toStringAsFixed(2)), // força 2 casas decimais
+    trailing: Text(_formatter.format(expense.value)),
+    onTap: () async {
+      final status = await showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (_) => ExpenseForm(expense: expense),
+      );
+      if (status == true) {
+        onRefresh();
+      }
+    },
   );
 }
