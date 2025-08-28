@@ -9,7 +9,6 @@ import 'package:my_platform/pages/finance/monthly_calculation.dart';
 import 'package:my_platform/pages/finance/list_expenses.dart';
 
 void main() {
-
   // Initialize FFI for desktop platforms if needed
   if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
     sqfliteFfiInit();
@@ -39,6 +38,9 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
+        bottomAppBarTheme: BottomAppBarTheme(
+          color: Color(0xFF1F1F1F),
+        ),
         cardColor: const Color(0xFF1F1F1F),
         iconTheme: const IconThemeData(color: Colors.white),
         textTheme: const TextTheme(
@@ -47,8 +49,8 @@ class MyApp extends StatelessWidget {
           titleLarge: TextStyle(color: Colors.white),
         ),
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-            backgroundColor: const Color(0xFF1E1E1E),
-        )
+          backgroundColor: const Color(0xFF1E1E1E),
+        ),
       ),
       initialRoute: '/',
       routes: {
