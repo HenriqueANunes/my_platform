@@ -32,7 +32,10 @@ Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, 
     leading: const Icon(Icons.trending_down),
     title: Text(expense.name),
     subtitle: Text(dateText.isNotEmpty ? dateText : 'Sem data'),
-    trailing: Text(_formatter.format(expense.value)),
+    trailing: Text(
+      _formatter.format(expense.value),
+      style: TextStyle(fontSize: 20),
+    ),
     onTap: () async {
       final status = await showModalBottomSheet(
         context: context,
