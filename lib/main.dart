@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
         cardColor: const Color(0xFF1F1F1F),
         iconTheme: const IconThemeData(color: Colors.white),
         textTheme: const TextTheme(
-          bodyMedium: TextStyle(color: Colors.white70),
+          bodyMedium: TextStyle(color: Colors.white),
           bodyLarge: TextStyle(color: Colors.white),
           titleLarge: TextStyle(color: Colors.white),
         ),

@@ -6,6 +6,7 @@ class ExpenseModel {
   final DateTime? date_end;
   final String type;
   final bool isCredit;
+  final bool status;
 
   ExpenseModel({
     this.id,
@@ -15,6 +16,7 @@ class ExpenseModel {
     this.date_end,
     required this.type,
     this.isCredit = false,
+    this.status = true,
   });
 
   // 'Object' to 'Map'
@@ -32,6 +34,7 @@ class ExpenseModel {
 
     map['type'] = type;
     map['is_credit'] = isCredit == true ? 1 : 0;
+    map['status'] = status == true ? 1 : 0;
 
     return map;
   }
@@ -48,6 +51,7 @@ class ExpenseModel {
         ? DateTime.fromMillisecondsSinceEpoch(data['date_end'])
         : null,
     type: data['type'],
-    isCredit: data['is_credit'] == 1
+    isCredit: data['is_credit'] == 1,
+    status: data['status'] == 1,
   );
 }
