@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_platform/widgets/expense_form.dart';
 import 'package:my_platform/widgets/expense_tile.dart';
+import 'package:my_platform/widgets/app_bar_footer.dart';
 import 'package:my_platform/services/expense_service.dart';
 import 'package:my_platform/models/expense_model.dart';
 
@@ -43,10 +44,6 @@ class ExpensesList extends State<ListExpensesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Despesas cadastradas'),
-        backgroundColor: theme.appBarTheme.backgroundColor,
-        elevation: theme.appBarTheme.elevation,
-        iconTheme: theme.appBarTheme.iconTheme,
-        titleTextStyle: theme.appBarTheme.titleTextStyle,
       ),
       body: FutureBuilder<List<ExpenseModel?>>(
         future: _expensesList,
@@ -90,35 +87,32 @@ class ExpensesList extends State<ListExpensesPage> {
           }
         },
         tooltip: 'Cadatrar Despesa',
-        backgroundColor: theme.floatingActionButtonTheme.backgroundColor,
         child: const Icon(Icons.add),
       ),
-      bottomNavigationBar: Container(
-        height: 60.0,
-        color: theme.appBarTheme.backgroundColor,
-        child: FutureBuilder<double?>(
-          future: _expensesTotal,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                final error = snapshot.error;
-                return Center(child: Text('$error'));
-              } else {
-                final expenseTotal = snapshot.data;
-                return Center(
-                  child: Text(
-                    '${_formatter.format(expenseTotal)}',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                );
-              }
+      bottomNavigationBar: FutureBuilder<double?>(
+        future: _expensesTotal,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.connectionState == ConnectionState.done) {
+            if (snapshot.hasError) {
+              final error = snapshot.error;
+              return Center(child: Text('$error'));
             } else {
-              return const Center(child: Text('teste'));
+              final expenseTotal = snapshot.data;
+              return AppFooter(
+                child: Center(
+                  child: Text(
+                    _formatter.format(expenseTotal),
+                    style: const TextStyle(fontSize: 30),
+                  ),
+                ),
+              );
             }
-          },
-        ),
+          } else {
+            return const Center(child: Text('teste'));
+          }
+        },
       ),
     );
   }
