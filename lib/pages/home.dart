@@ -6,19 +6,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
-          'Meu App',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-            color: theme.iconTheme.color,
-          ),
-        ),
-        backgroundColor: theme.appBarTheme.backgroundColor,
+        title: Text('Meu App'),
       ),
       body: Column(
         children: [

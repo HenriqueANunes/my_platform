@@ -6,14 +6,10 @@ class FinancePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Finanças'),
-        backgroundColor: theme.appBarTheme.backgroundColor,
-        elevation: theme.appBarTheme.elevation,
-        iconTheme: theme.appBarTheme.iconTheme,
-        titleTextStyle: theme.appBarTheme.titleTextStyle,
+        title: Text('Finanças'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {

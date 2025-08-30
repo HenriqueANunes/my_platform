@@ -103,6 +103,7 @@ class ExpenseFormState extends State<ExpenseForm> {
             const SizedBox(height: 20.0),
             ElevatedButton.icon(
               onPressed: _saveExpense,
+
               icon: const Icon(Icons.save),
               label: Text(widget.expense == null ? 'Salvar' : 'Atualizar'),
             ),
