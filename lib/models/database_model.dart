@@ -37,8 +37,7 @@ class DatabaseModel {
         date_start INTEGER,
         date_end INTEGER,
         type TEXT,
-        is_credit BOOLEAN,
-        status BOOLEAN
+        is_credit BOOLEAN
       )
     """);
   }

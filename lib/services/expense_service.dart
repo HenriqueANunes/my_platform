@@ -28,7 +28,7 @@ class ExpenseService {
     var result = await db.query(
       'expenses',
       orderBy: 'id ASC',
-      where: 'status = 1 and ((date_start <= ? and date_end >= ?) or date_start is null or date_end is null)',
+      where: '((date_start <= ? and date_end >= ?) or date_start is null or date_end is null)',
       whereArgs: [dateNow, dateNow],
     );
     return result.map((json) => ExpenseModel.fromJson(json)).toList();
@@ -41,7 +41,7 @@ class ExpenseService {
       'expenses',
       columns: ['sum(value) as total'],
       orderBy: 'id ASC',
-      where: 'status = 1 and ((date_start <= ? and date_end >= ?) or date_start is null or date_end is null)',
+      where: '((date_start <= ? and date_end >= ?) or date_start is null or date_end is null)',
       whereArgs: [dateNow, dateNow],
     );
     return result[0]['total'] == null ? 0.0 : double.parse(result[0]['total'].toString());
@@ -49,13 +49,12 @@ class ExpenseService {
 
   Future<bool> deleteExpense(int id) async {
     final db = await DatabaseModel.instance.getDatabase();
-    var result = await db.update(
+    var result = await db.delete(
       'expenses',
-      {'status': 0},
       where: 'id = ?',
       whereArgs: [id],
     );
-    print(result);
+
     if (result != 0){
       return true;
     } else {

@@ -15,8 +15,8 @@ class CustomTheme {
         surface: Color(0xFF121212),
         primary: Colors.white,
         onPrimary: Colors.black,
-        // secondary: Colors.red,
-        // tertiary: Colors.green,
+        secondary: Colors.grey.shade500,
+        tertiary: Colors.red,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: Colors.grey.shade900,
