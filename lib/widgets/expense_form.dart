@@ -19,6 +19,8 @@ class ExpenseFormState extends State<ExpenseForm> {
   bool _isCredit = false;
   DateTimeRange? _dateRange;
 
+  final _formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
@@ -50,19 +52,27 @@ class ExpenseFormState extends State<ExpenseForm> {
     return Container(
       height: MediaQuery.of(context).size.height * 0.7,
       padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
+      child: Form(
+        key: _formKey,
         child: Column(
           children: [
             // Title
-            TextField(
+            TextFormField(
               controller: _name,
+              keyboardType: TextInputType.text,
               decoration: const InputDecoration(
                 labelText: 'Nome da despesa',
               ),
+              validator: (value) {
+                if (value == '') {
+                  return 'É necessário preencher o nome';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20.0),
             // Amount
-            TextField(
+            TextFormField(
               controller: _value,
               keyboardType: TextInputType.number,
               decoration: const InputDecoration(
@@ -71,6 +81,12 @@ class ExpenseFormState extends State<ExpenseForm> {
               inputFormatters: [
                 CurrencyInputFormatter(),
               ],
+              validator: (value) {
+                if (value == 'R\$ 0,00') {
+                  return 'É necessário preencher o valor';
+                }
+                return null;
+              },
             ),
             const SizedBox(height: 20.0),
             // Initial Date
@@ -102,8 +118,11 @@ class ExpenseFormState extends State<ExpenseForm> {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton.icon(
-              onPressed: _saveExpense,
-
+              onPressed: () {
+                if (_formKey.currentState!.validate()){
+                  _saveExpense();
+                }
+              },
               icon: const Icon(Icons.save),
               label: Text(widget.expense == null ? 'Salvar' : 'Atualizar'),
             ),
