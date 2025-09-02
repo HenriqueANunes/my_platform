@@ -11,6 +11,33 @@ Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, 
   );
   final _expenseObj = ExpenseService();
 
+  void _deleteExpense() async {
+    showDialog(context: context, builder: (context) {
+      return AlertDialog(
+        title: Text('Deletar Despesa'),
+        content: Text('Tem certeza que você quer deletar essa despesa?'),
+        actions: [
+          MaterialButton(
+            onPressed: () async {
+              final status = await _expenseObj.deleteExpense(expense.id!);
+              if (status) {
+                onRefresh();
+              }
+              Navigator.pop(context);
+            },
+            child: Text('Sim'),
+          ),
+          MaterialButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Não'),
+          ),
+        ],
+      );
+    });
+  }
+
   return ListTile(
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
     tileColor: theme.cardColor,
@@ -18,12 +45,7 @@ Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, 
     title: Text(expense.name),
     subtitle: Text(_formatter.format(expense.value)),
     trailing: ElevatedButton(
-      onPressed: () async {
-        final status = await _expenseObj.deleteExpense(expense.id!);
-        if (status) {
-          onRefresh();
-        }
-      },
+      onPressed: _deleteExpense,
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.all(Colors.transparent),
         shadowColor: WidgetStateProperty.all(Colors.transparent),
