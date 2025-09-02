@@ -34,7 +34,6 @@ class ExpenseModel {
 
     map['type'] = type;
     map['is_credit'] = isCredit == true ? 1 : 0;
-    map['status'] = status == true ? 1 : 0;
 
     return map;
   }
@@ -52,6 +51,5 @@ class ExpenseModel {
         : null,
     type: data['type'],
     isCredit: data['is_credit'] == 1,
-    status: data['status'] == 1,
   );
 }
