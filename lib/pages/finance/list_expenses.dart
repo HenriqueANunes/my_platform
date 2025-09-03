@@ -16,7 +16,7 @@ class ListExpensesPage extends StatefulWidget {
 class ExpensesList extends State<ListExpensesPage> {
   final _expenseObj = ExpenseService();
   late Future<List<ExpenseModel?>> _expensesList;
-  late Future<double?> _expensesTotal;
+  late Future<double> _expensesTotal;
 
   final NumberFormat _formatter = NumberFormat.currency(
     locale: 'pt_BR',
