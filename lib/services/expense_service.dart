@@ -34,14 +34,20 @@ class ExpenseService {
     return result.map((json) => ExpenseModel.fromJson(json)).toList();
   }
 
-  Future<double> getTotal() async {
+  Future<double> getTotal({isCredit = true}) async {
     final db = await DatabaseModel.instance.getDatabase();
     final dateNow = DateTime.now().millisecondsSinceEpoch;
+
+    String filter = '';
+    if (!isCredit){
+      filter = ' and not is_credit';
+    }
+
     var result = await db.query(
       'expenses',
       columns: ['sum(value) as total'],
       orderBy: 'id ASC',
-      where: '((date_start <= ? and date_end >= ?) or date_start is null or date_end is null)',
+      where: '((date_start <= ? and date_end >= ?) or date_start is null or date_end is null) $filter',
       whereArgs: [dateNow, dateNow],
     );
     return result[0]['total'] == null ? 0.0 : double.parse(result[0]['total'].toString());
