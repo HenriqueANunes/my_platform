@@ -35,7 +35,7 @@ class FinancePage extends StatelessWidget {
             children: [
               AnimatedSquare(
                 icon: Icons.attach_money,
-                label: 'Calculo mensal',
+                label: 'Receita líquida',
                 onTap: () => Navigator.pushNamed(context, '/finance/monthly_calculation.dart'),
               ),
               AnimatedSquare(
