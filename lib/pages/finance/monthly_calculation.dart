@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_platform/services/currency_formatter.dart';
 import 'package:my_platform/services/expense_service.dart';
+import 'package:my_platform/widgets/app_bar_footer.dart';
+import 'package:number_text_input_formatter/number_text_input_formatter.dart';
 
 class MonthlyCalculationPage extends StatefulWidget {
   const MonthlyCalculationPage({super.key});
@@ -14,6 +16,7 @@ class _State extends State<MonthlyCalculationPage> {
   final _inflows = TextEditingController();
   final _credit = TextEditingController();
   final _other = TextEditingController();
+  final _percentageToInvest = TextEditingController();
 
   final _expenseObj = ExpenseService();
   late Future<double> _monthExpensesTotal;
@@ -25,6 +28,9 @@ class _State extends State<MonthlyCalculationPage> {
 
   final _formKey = GlobalKey<FormState>();
 
+  double _liquidIncome = 0.0;
+  double _totalInvetment = 0.0;
+
   @override
   void initState() {
     super.initState();
@@ -33,14 +39,24 @@ class _State extends State<MonthlyCalculationPage> {
     _inflows.text = 'R\$ 0,00';
     _credit.text = 'R\$ 0,00';
     _other.text = 'R\$ 0,00';
+    _percentageToInvest.text = '25';
   }
 
   Future<double> calculateLiquidIncome() async {
-    final monthExpensesTotal  = await _monthExpensesTotal;
-    final double totalExenses = double.parse(_credit.text) + double.parse(_other.text) + monthExpensesTotal;
+    final monthExpensesTotal = await _monthExpensesTotal;
 
-    final liquidIncome = double.parse(_inflows.text) - totalExenses;
-    return liquidIncome;
+    double credit = CurrencyInputFormatter.deformatString(_credit.text);
+    double other = CurrencyInputFormatter.deformatString(_other.text);
+    double inflows = CurrencyInputFormatter.deformatString(_inflows.text);
+    print(_percentageToInvest.text);
+    double percentageToInvest = double.parse(_percentageToInvest.text) / 100;
+
+    final double totalExenses = credit + other + monthExpensesTotal;
+
+    _liquidIncome = inflows - totalExenses;
+    print(percentageToInvest);
+    _totalInvetment = _liquidIncome * percentageToInvest;
+    return _liquidIncome;
   }
 
   @override
@@ -104,8 +120,7 @@ class _State extends State<MonthlyCalculationPage> {
                     } else {
                       final monthExpensesTotal = TextEditingController();
                       monthExpensesTotal.text = _formatter.format(snapshot.data);
-
-                      return  TextField(
+                      return TextField(
                         controller: monthExpensesTotal,
                         decoration: const InputDecoration(
                           labelText: 'Total recorrente',
@@ -117,8 +132,7 @@ class _State extends State<MonthlyCalculationPage> {
                   } else {
                     final monthExpensesTotal = TextEditingController();
                     monthExpensesTotal.text = _formatter.format(0.0);
-
-                    return  TextField(
+                    return TextField(
                       controller: monthExpensesTotal,
                       decoration: const InputDecoration(
                         labelText: 'Total recorrente',
@@ -130,12 +144,36 @@ class _State extends State<MonthlyCalculationPage> {
                 },
               ),
               const SizedBox(height: 20.0),
-              ElevatedButton.icon(
-                onPressed: () {},
+              TextFormField(
+                controller: _percentageToInvest,
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(
+                  labelText: 'Porcentagem para investir',
+                  border: OutlineInputBorder(),
+                  suffixText: '%',
+                ),
+                inputFormatters: [PercentageTextInputFormatter()],
+              ),
+              const SizedBox(height: 20.0),
+              OutlinedButton.icon(
+                onPressed: () async {
+                  _liquidIncome = await calculateLiquidIncome();
+                  setState(() {
+                    _liquidIncome = _liquidIncome;
+                  });
+                },
                 icon: const Icon(Icons.calculate),
                 label: Text('Calcular Renda líquida'),
               ),
             ],
+          ),
+        ),
+      ),
+      bottomNavigationBar: AppFooter(
+        child: Center(
+          child: Text(
+            '${_formatter.format(_liquidIncome)} (${_formatter.format(_totalInvetment)})',
+            style: TextStyle(fontSize: 30, color: _liquidIncome > 0 ? Colors.white : Colors.red),
           ),
         ),
       ),

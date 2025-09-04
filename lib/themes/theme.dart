@@ -37,6 +37,9 @@ class CustomTheme {
         splashColor: Colors.grey.shade800,
         foregroundColor: Colors.white,
       ),
+      buttonTheme: ButtonThemeData(
+        buttonColor: Colors.grey.shade900,
+      ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: Colors.grey.shade900,
       ),

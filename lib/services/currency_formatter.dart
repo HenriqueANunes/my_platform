@@ -28,4 +28,9 @@ class CurrencyInputFormatter extends TextInputFormatter {
       selection: TextSelection.collapsed(offset: newText.length),
     );
   }
+
+  static double deformatString(String value) {
+    String cleaned = value.replaceAll("R\$", "").trim().replaceAll(".", "").replaceAll(",", ".");
+    return double.parse(cleaned);
+  }
 }
