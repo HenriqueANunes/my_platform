@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_platform/models/expense_model.dart';
+import 'package:my_platform/models/finance/expense_model.dart';
 import 'package:my_platform/widgets/expense_form.dart';
-import 'package:my_platform/services/expense_service.dart';
+import 'package:my_platform/services/finance/finance_service.dart';
 
 Widget expenseTile(BuildContext context, ExpenseModel expense, ThemeData theme, VoidCallback onRefresh) {
   final NumberFormat _formatter = NumberFormat.currency(
     locale: 'pt_BR',
     symbol: 'R\$',
   );
-  final _expenseObj = ExpenseService();
+  final _expenseObj = FinanceService();
 
   void _deleteExpense() async {
     showDialog(context: context, builder: (context) {

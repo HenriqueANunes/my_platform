@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_platform/services/currency_formatter.dart';
-import 'package:my_platform/services/expense_service.dart';
+import 'package:my_platform/models/finance/history_model.dart';
+import 'package:my_platform/utils/currency_formatter.dart';
+import 'package:my_platform/services/finance/finance_service.dart';
 import 'package:my_platform/widgets/app_bar_footer.dart';
 import 'package:number_text_input_formatter/number_text_input_formatter.dart';
+import 'package:my_platform/utils/utils.dart';
 
 class MonthlyCalculationPage extends StatefulWidget {
   const MonthlyCalculationPage({super.key});
@@ -18,7 +20,7 @@ class _State extends State<MonthlyCalculationPage> {
   final _other = TextEditingController();
   final _percentageToInvest = TextEditingController();
 
-  final _expenseObj = ExpenseService();
+  final _expenseObj = FinanceService();
   late Future<double> _monthExpensesTotal;
 
   final NumberFormat _formatter = NumberFormat.currency(
@@ -57,6 +59,22 @@ class _State extends State<MonthlyCalculationPage> {
     print(percentageToInvest);
     _totalInvetment = _liquidIncome * percentageToInvest;
     return _liquidIncome;
+  }
+
+  void saveHistory(){
+    // todo: terminar
+    final history = HistoryModel(
+      yearmonth: getYearMonth(),
+      revenue,
+      credit,
+      other: 0,
+      monthExpenses,
+      liquidRevenue,
+      investmentValue,
+    );
+
+    // add it to database.
+    FinanceService().saveExpense(expenseObj: expense);
   }
 
   @override

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:my_platform/models/expense_model.dart';
-import 'package:my_platform/services/currency_formatter.dart';
-import 'package:my_platform/services/expense_service.dart';
+import 'package:my_platform/models/finance/expense_model.dart';
+import 'package:my_platform/utils/currency_formatter.dart';
+import 'package:my_platform/services/finance/finance_service.dart';
 
 class ExpenseForm extends StatefulWidget {
   final ExpenseModel? expense; // se vier, edita; se não, cria
@@ -163,7 +163,7 @@ class ExpenseFormState extends State<ExpenseForm> {
     );
 
     // add it to database.
-    ExpenseService().saveExpense(expenseObj: expense);
+    FinanceService().saveExpense(expenseObj: expense);
 
     // close the bottomsheet
     Navigator.of(context).pop(true);

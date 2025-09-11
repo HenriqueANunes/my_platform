@@ -3,8 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:my_platform/widgets/expense_form.dart';
 import 'package:my_platform/widgets/expense_tile.dart';
 import 'package:my_platform/widgets/app_bar_footer.dart';
-import 'package:my_platform/services/expense_service.dart';
-import 'package:my_platform/models/expense_model.dart';
+import 'package:my_platform/services/finance/finance_service.dart';
+import 'package:my_platform/models/finance/expense_model.dart';
 
 class ListExpensesPage extends StatefulWidget {
   const ListExpensesPage({super.key});
@@ -14,7 +14,7 @@ class ListExpensesPage extends StatefulWidget {
 }
 
 class ExpensesList extends State<ListExpensesPage> {
-  final _expenseObj = ExpenseService();
+  final _expenseObj = FinanceService();
   late Future<List<ExpenseModel?>> _expensesList;
   late Future<double> _expensesTotal;
 
