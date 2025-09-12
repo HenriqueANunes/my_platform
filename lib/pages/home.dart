@@ -43,9 +43,9 @@ class HomePage extends StatelessWidget {
                       onTap: () => Navigator.pushNamed(context, '/finance/finance.dart'),
                     ),
                     AnimatedSquare(
-                      icon: Icons.settings,
-                      label: 'A fazer...',
-                      onTap: () {},
+                      icon: Icons.surround_sound,
+                      label: 'Dispositivos de Som',
+                      onTap: () => Navigator.pushNamed(context, '/sound/home.dart'),
                     ),
                     // pode adicionar mais cards aqui se quiser
                   ],
